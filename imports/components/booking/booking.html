@@ -1,0 +1,65 @@
+<div style="background-color: rgb(57,73,171);">
+    <h2 style="color: white;padding: 50px;margin: 0;text-align: center;">Machine Learning Hub Booking Form</h2>
+</div>
+
+<md-content class="md-padding autocomplete" layout="column" style="margin-top: 20px;">
+    <form name="$ctrl.bookingForm" novalidate style="width: 100%; max-width: 500px; margin-left: auto; margin-right: auto;">
+        <div class="booking-row">
+            <p>Select a date</p>
+            <md-datepicker style="margin-left:-16px;" name="date" ng-model="$ctrl.model.date" md-placeholder="Enter date"></md-datepicker>
+            <div>
+                <p class="error" ng-if="$ctrl.showDateError()">Please choose a date</p>
+            </div>
+        </div>
+
+        <div class="booking-row" ng-if="$ctrl.showTimes()">
+            <p>Choose your times (1 hour slots)</p>
+            <div layout="row" layout-wrap flex>
+                <div flex="50" ng-repeat="time in $ctrl.times">
+                    <md-checkbox ng-checked="$ctrl.exists(time.value, $ctrl.model.times)"
+                                 ng-click="$ctrl.toggle(time.value, $ctrl.model.times)">
+                        {{ time.name }}
+                    </md-checkbox>
+                </div>
+            </div>
+            <div>
+                <p class="error" ng-if="$ctrl.showTimesError()">Please choose a time slot</p>
+            </div>
+        </div>
+
+        <div class="booking-row">
+            <p>Choose a booking type</p>
+            <md-radio-group name="type" ng-model="$ctrl.model.type" ng-required="true">
+                <md-radio-button value="class" class="md-primary">Class</md-radio-button>
+                <md-radio-button value="individual">Individual</md-radio-button>
+            </md-radio-group>
+            <div>
+                <p class="error" ng-if="$ctrl.showTypeError()">Please choose a booking type</p>
+            </div>
+        </div>
+
+        <div class="booking-row" ng-if="$ctrl.showUsers()">
+            <p>Add {{$ctrl.contactLabel()}}</p>
+            <md-contact-chips
+                    ng-model="$ctrl.model.users"
+                    md-contacts="$ctrl.querySearch($query)"
+                    md-contact-name="name"
+                    md-contact-image="image"
+                    md-contact-email="upi"
+                    md-require-match="true"
+                    md-highlight-flags="i"
+                    filter-selected="$ctrl.filterSelected"
+                    placeholder="{{$ctrl.contactLabel(capitalize=true)}}">
+            </md-contact-chips>
+            <div>
+                <p class="error" ng-if="$ctrl.showMinUsersError()">Please add at least one user</p>
+                <p class="error" ng-if="$ctrl.showMaxUsersError()">Do not add more than one user</p>
+            </div>
+        </div>
+
+        <div class="booking-row" style="text-align: right;">
+            <md-button class="md-primary md-raised" ng-click="$ctrl.submit()">Save</md-button>
+        </div>
+    </form>
+</md-content>
+
