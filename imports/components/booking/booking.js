@@ -18,6 +18,7 @@ class BookingCtrl {
         this.allContacts = this.loadContacts();
 
         this.times = [];
+        this.bookedSlots = new Set();
         this.model = {
             date: '',
             times: [],
@@ -41,6 +42,35 @@ class BookingCtrl {
             }
         }, true);
 
+        this.helpers({
+            bookingsOnDate: () => {
+                return Bookings.find({});
+            }
+        });
+
+        this.subscribe('bookingsOnDate', () => {
+            return [
+                this.getReactively('model.date')
+            ]
+        });
+
+        $scope.$watch('$ctrl.bookingsOnDate', (newValue, oldValue) => {
+            if(newValue !== undefined) {
+                let union = new Set();
+
+                for(let i = 0; i < this.bookingsOnDate.length; i++) {
+                    let times = this.bookingsOnDate[i].times;
+                    union.add(...new Set(times));
+                }
+
+                this.bookedSlots = union;
+            }
+        }, true);
+
+    }
+
+    isSlotBooked(time) {
+        return this.bookedSlots.has(time.hour());
     }
 
     loadTimes() {
@@ -176,11 +206,11 @@ class BookingCtrl {
     loadContacts() {
         let contacts = [
             {name: 'Jamie Diprose', upi: 'jdip004'},
-            {name: 'Manish Kukreja', upi: '3324'},
-            {name: 'Nick Young', upi: '324234'},
-            {name: 'Martin Feller', upi: 'sdfsdf'},
-            {name: 'Sina Mosad Ansari', upi: '2334'},
-            {name: 'Jason He', upi: '98979'}
+            {name: 'Manish Kukreja', upi: 'mkuk073'},
+            {name: 'Nick Young', upi: 'nyou045'},
+            {name: 'Martin Feller', upi: 'mfel395'},
+            {name: 'Sina Masoud-Ansari', upi: 'smas036'},
+            {name: 'Jason He', upi: 'zhe203'}
         ];
 
         return contacts.map((c, index) => {

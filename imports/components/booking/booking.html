@@ -17,7 +17,9 @@
             <div layout="row" layout-wrap flex>
                 <div flex="50" ng-repeat="time in $ctrl.times">
                     <md-checkbox ng-checked="$ctrl.exists(time.value, $ctrl.model.times)"
-                                 ng-click="$ctrl.toggle(time.value, $ctrl.model.times)">
+                                 ng-click="$ctrl.toggle(time.value, $ctrl.model.times)"
+                                 md-indeterminate="$ctrl.isSlotBooked(time.value)"
+                                 ng-disabled="$ctrl.isSlotBooked(time.value)">
                         {{ time.name }}
                     </md-checkbox>
                 </div>
