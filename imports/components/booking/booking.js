@@ -33,6 +33,7 @@ class BookingCtrl {
         $scope.$watch('$ctrl.model.date', (newValue, oldValue) => {
             if(newValue !== '') {
                 this.times = this.loadTimes();
+                this.model.times = [];
             }
         }, true);
 
@@ -71,7 +72,6 @@ class BookingCtrl {
     }
 
     isSlotBooked(time) {
-        // console.log('time', time.hour());
         return this.bookedSlots.has(time.hour());
     }
 
