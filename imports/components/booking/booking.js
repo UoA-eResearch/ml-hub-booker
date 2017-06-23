@@ -60,9 +60,10 @@ class BookingCtrl {
 
                 for(let i = 0; i < this.bookingsOnDate.length; i++) {
                     let times = this.bookingsOnDate[i].times;
-                    union.add(...new Set(times));
+                    for(let j = 0; j < times.length; j++) {
+                        union.add(times[j]);
+                    }
                 }
-
                 this.bookedSlots = union;
             }
         }, true);
@@ -70,6 +71,7 @@ class BookingCtrl {
     }
 
     isSlotBooked(time) {
+        // console.log('time', time.hour());
         return this.bookedSlots.has(time.hour());
     }
 
@@ -155,21 +157,21 @@ class BookingCtrl {
     }
 
     showMinUsersError() {
-        return this.bookingForm.$submitted && this.model.users < 1;
+        return this.bookingForm.$submitted && this.model.users.length < 1;
     }
 
     showMaxUsersError() {
-        return this.bookingForm.$submitted && this.model.users > 1 && this.model.type === 'individual';
+        return this.bookingForm.$submitted && this.model.users.length > 1 && this.model.type === 'individual';
     }
 
     submit() {
         this.bookingForm.$submitted = true;
 
-        if (this.bookingForm.$valid && this.model.times.length > 0 && this.model.users.length > 0) {
+        if (!this.showDateError() && !this.showTimesError() && !this.showTypeError() && !this.showMinUsersError()
+            && !this.showMaxUsersError()) {
             let model = {times: [], users: []};
             model.date = this.model.date;
             model.type = this.model.type;
-            // model.users = this.model.users;
 
             // Hours
             for(let i = 0; i < this.model.times.length; i++) {
