@@ -32,8 +32,8 @@
         <div class="booking-row">
             <p>Choose a booking type</p>
             <md-radio-group name="type" ng-model="$ctrl.model.type" ng-required="true">
-                <md-radio-button value="class" class="md-primary">Class</md-radio-button>
-                <md-radio-button value="individual">Individual</md-radio-button>
+                <md-radio-button value="individual" class="md-primary">Individual</md-radio-button>
+                <md-radio-button value="class">Group</md-radio-button>
             </md-radio-group>
             <div>
                 <p class="error" ng-if="$ctrl.showTypeError()">Please choose a booking type</p>
